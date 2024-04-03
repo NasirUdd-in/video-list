@@ -1,3 +1,7 @@
+# framework: django
+# database: sqlite
+# full problem solved
+
 ## http://nasir96.pythonanywhere.com/admin
 ## admin login
    username: admin
