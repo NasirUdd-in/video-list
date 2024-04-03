@@ -1,0 +1,21 @@
+# Ignore version control system files
+.git
+.gitignore
+
+# Ignore Python bytecode files
+__pycache__
+*.pyc
+
+# Ignore development and temporary files
+*.log
+*.sqlite3
+*.pyc
+
+# Ignore media files
+media/
+
+# Ignore static files
+staticfiles/
+
+# Ignore virtual environment
+venv/
