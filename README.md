@@ -1,20 +1,35 @@
+## http://nasir96.pythonanywhere.com/admin
+## admin login
+   username: admin
+   password: admin
+
 1. User can login
 
-http://127.0.0.1:8000/login/
+http://nasir96.pythonanywhere.com/login/
+
+example user
+username: test1
+password: test1
 
 2. User can add a movie
 
-http://127.0.0.1:8000/add-movies/
+http://nasir96.pythonanywhere.com/add-movies/
 
 3. User can view a list of all movies
 
-http://127.0.0.1:8000/all-ratings/
+http://nasir96.pythonanywhere.com/all-ratings/
 
 4. User can rate a movie
 
-http://127.0.0.1:8000/ratings/
+http://nasir96.pythonanywhere.com/ratings/
 
 
 5. User search up a specific movie and see it’s details along with the average rating of a movie
 
-http://127.0.0.1:8000/all-ratings/?name=inception
+http://nasir96.pythonanywhere.com/?name=inception
+
+
+#run on local machine by using below docker cmd
+
+docker-compose up
+
