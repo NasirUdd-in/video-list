@@ -3,12 +3,11 @@ from .serializers import CustomUserSerializer,UserLoginSerializer,MovieCreateSer
 
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate
-
 from rest_framework import generics
+from django.db.models import Avg
 
 
 
@@ -57,29 +56,33 @@ class RatingListCreateAPIView(generics.ListCreateAPIView):
     queryset = Rating.objects.all()
     serializer_class = RatingSerializer
 
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from .models import Rating
-from django.db.models import Avg
+
+
 
 class AllRatings(APIView):
     def get(self, request):
-        # Retrieve all unique movies along with their average ratings
-        unique_movies_with_avg = Rating.objects.values('movie__id', 'movie__name', 'movie__genre', 'movie__release_date').annotate(average_rating=Avg('rating'))
+        # Retrieve query parameter for movie name
+        movie_name = request.query_params.get('name', None)
 
-        if not unique_movies_with_avg:
+        # If movie name is provided, filter queryset accordingly
+        if movie_name:
+            movies_with_avg = Rating.objects.filter(movie__name__iexact=movie_name).values('movie__id', 'movie__name', 'movie__genre', 'movie__release_date').annotate(average_rating=Avg('rating'))
+        else:
+            # If movie name is not provided, retrieve all unique movies along with their average ratings
+            movies_with_avg = Rating.objects.values('movie__id', 'movie__name', 'movie__genre', 'movie__release_date').annotate(average_rating=Avg('rating'))
+
+        if not movies_with_avg:
             return Response({"message": "No movies found with ratings"}, status=status.HTTP_404_NOT_FOUND)
 
         # Construct response data
         response_data = []
-        for movie in unique_movies_with_avg:
+        for movie in movies_with_avg:
             response_data.append({
                 "id": movie['movie__id'],
                 "name": movie['movie__name'],
                 "genre": movie['movie__genre'],
                 "rating": movie['average_rating'],
-                "relase_date": movie['movie__release_date'],
+                "release_date": movie['movie__release_date'],
             })
 
         return Response(response_data, status=status.HTTP_200_OK)
